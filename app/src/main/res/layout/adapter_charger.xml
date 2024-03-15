@@ -12,7 +12,9 @@
         android:layout_height="match_parent"
         android:layout_margin="5dp"
         app:cardCornerRadius="5dp"
-        app:cardElevation="20dp">
+        app:cardElevation="10dp"
+        app:cardMaxElevation="12dp"
+        app:cardPreventCornerOverlap="true">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -20,13 +22,14 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/charger_provider"
+                android:id="@+id/charger_operator"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textStyle="bold"
                 android:textColor="@color/green4"
-                tools:text="Charger Title" />
+                android:textSize="24sp"
+                android:textStyle="bold"
+                tools:text="Charger Operator" />
 
             <TextView
                 android:id="@+id/charger_description"
@@ -34,6 +37,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:textColor="@color/green2"
+                android:textSize="20sp"
                 tools:text="Charger Description" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
