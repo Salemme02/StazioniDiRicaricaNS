@@ -1,13 +1,14 @@
 plugins {
     alias(libs.plugins.androidApplication)
+    id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
 }
 
 android {
-    namespace = "com.example.stazionidiricaricans"
+    namespace = "it.univaq.app.stazionidiricaricans"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.stazionidiricaricans"
+        applicationId = "it.univaq.app.stazionidiricaricans"
         minSdk = 26
         targetSdk = 34
         versionCode = 1
@@ -42,7 +43,15 @@ dependencies {
     implementation(libs.navigation.fragment)
     implementation(libs.navigation.ui)
 
+    //Internet requests
     implementation("com.google.android.gms:play-services-cronet:18.0.1")
+
+    //Navigation UI
+    implementation("androidx.navigation:navigation-fragment:2.7.7")
+    implementation("androidx.navigation:navigation-ui:2.7.7")
+
+    //Maps
+    implementation("com.google.android.gms:play-services-maps:18.2.0")
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)

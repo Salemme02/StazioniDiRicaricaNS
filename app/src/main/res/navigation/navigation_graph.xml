@@ -6,10 +6,10 @@
 
     <fragment
         android:id="@+id/menu_list"
-        android:name="com.example.stazionidiricaricans.ListFragment"
+        android:name="it.univaq.app.stazionidiricaricans.ListFragment"
         android:label="ListFragment" />
     <fragment
         android:id="@+id/menu_map"
-        android:name="com.example.stazionidiricaricans.MapFragment"
+        android:name="it.univaq.app.stazionidiricaricans.MapFragment"
         android:label="MapFragment" />
 </navigation>

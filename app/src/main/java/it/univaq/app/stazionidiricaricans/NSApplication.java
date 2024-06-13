@@ -1,8 +1,8 @@
-package com.example.stazionidiricaricans;
+package it.univaq.app.stazionidiricaricans;
 
 import android.app.Application;
 
-import com.example.stazionidiricaricans.service.Repository;
+import it.univaq.app.stazionidiricaricans.service.Repository;
 
 public class NSApplication extends Application {
 

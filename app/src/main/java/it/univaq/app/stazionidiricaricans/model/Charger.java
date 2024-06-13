@@ -1,4 +1,4 @@
-package com.example.stazionidiricaricans.model;
+package it.univaq.app.stazionidiricaricans.model;
 
 import org.json.JSONException;
 import org.json.JSONObject;

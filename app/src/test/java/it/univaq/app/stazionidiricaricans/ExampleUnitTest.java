@@ -1,4 +1,4 @@
-package com.example.stazionidiricaricans;
+package it.univaq.app.stazionidiricaricans;
 
 import org.junit.Test;
 

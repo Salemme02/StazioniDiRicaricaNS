@@ -1,4 +1,4 @@
-package com.example.stazionidiricaricans.service;
+package it.univaq.app.stazionidiricaricans.service;
 
 
 import android.content.Context;

@@ -2,4 +2,5 @@
     <string name="app_name">StazioniDiRicaricaNS</string>
     <string name="list">List</string>
     <string name="map">Map</string>
+    <string name="LocationRequiredMessage">This application does not work without location!</string>
 </resources>

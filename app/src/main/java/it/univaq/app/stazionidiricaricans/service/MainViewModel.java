@@ -1,16 +1,15 @@
-package com.example.stazionidiricaricans.service;
+package it.univaq.app.stazionidiricaricans.service;
 
 import androidx.lifecycle.AndroidViewModel;
 
 
 import android.app.Application;
-import android.content.Context;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.stazionidiricaricans.NSApplication;
-import com.example.stazionidiricaricans.model.Charger;
+import it.univaq.app.stazionidiricaricans.NSApplication;
+import it.univaq.app.stazionidiricaricans.model.Charger;
 
 import org.chromium.net.CronetException;
 import org.chromium.net.UrlRequest;
