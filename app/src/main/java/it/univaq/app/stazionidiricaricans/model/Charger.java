@@ -23,6 +23,7 @@ public class Charger implements Serializable {
         charger.setCountry(addressInfo.getJSONObject("Country").optString("Title"));
         charger.setLatitude(addressInfo.optDouble("Latitude"));
         charger.setLongitude(addressInfo.optDouble("Longitude"));
+        charger.setLocationInfo(charger.country, charger.town);
 
         return charger;
     }
@@ -35,6 +36,7 @@ public class Charger implements Serializable {
     private String town;
     private String stateOrProvince;
     private String country;
+    private String locationInfo;
     private double latitude;
     private double longitude;
     private URL image;
@@ -109,6 +111,13 @@ public class Charger implements Serializable {
 
     public void setCountry(String country) {
         this.country = country;
+    }
+
+    public String getLocationInfo() {return locationInfo;}
+
+    public void setLocationInfo(String country, String town){
+        locationInfo = country;
+        if(town != null && !town.equals("null")) locationInfo = locationInfo + ", " + town;
     }
 
     public double getLatitude() {

@@ -84,8 +84,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
 
         //chiede i permessi
         int fineLocationPermission = ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION);
-        if(fineLocationPermission == PackageManager.PERMISSION_DENIED) {
+        while(fineLocationPermission == PackageManager.PERMISSION_DENIED) {
             permissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION);
+            fineLocationPermission = ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION);
         }
     }
 
