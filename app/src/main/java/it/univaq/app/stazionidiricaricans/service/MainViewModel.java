@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
 import it.univaq.app.stazionidiricaricans.NSApplication;
+import it.univaq.app.stazionidiricaricans.database.DB;
 import it.univaq.app.stazionidiricaricans.model.Charger;
 
 import org.chromium.net.CronetException;
@@ -31,52 +32,48 @@ public class MainViewModel extends AndroidViewModel { //usiamo AndroidViewModel 
         super(application);
 
 
-        new Thread(() -> {
-            repository = ((NSApplication) application).getRepository();
+        repository = ((NSApplication) application).getRepository();
+        //recupero la lista dal DB prima di fare la richiesta internet
+        List<Charger> list = DB.getInstance(getApplication()).getChargerDAO().findAll();
 
-            //recupero la lista dal DB
-            //List<Charger> list = DB.getInstance(getApplication()).getChargerDAO().findAll();
-            List<Charger> list = new ArrayList<>();
+        if (list.isEmpty()) {
+            repository.downloadData(application, new Request.RequestCallback() {
 
-            if (list.isEmpty()) {
-                repository.downloadData(application, new Request.RequestCallback() {
+                @Override
+                public void onCompleted(UrlRequest request, UrlResponseInfo info, byte[] data, CronetException error) {
 
-                    @Override
-                    public void onCompleted(UrlRequest request, UrlResponseInfo info, byte[] data, CronetException error) {
+                    List<Charger> temp = new ArrayList<>();
 
-                        List<Charger> temp = new ArrayList<>();
-
-                        //parsing dei dati
-                        if (data != null) {
-                            String response = new String(data);
-                            try {
-                                JSONArray array = new JSONArray(response);
-                                for (int i = 0; i < array.length(); i++) {
-                                    JSONObject item = array.optJSONObject(i);
-                                    Charger s = Charger.parseJSON(item);
-                                    if (s != null) temp.add(s);
-                                }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
+                    //parsing dei dati
+                    if (data != null) {
+                        String response = new String(data);
+                        try {
+                            JSONArray array = new JSONArray(response);
+                            for (int i = 0; i < array.length(); i++) {
+                                JSONObject item = array.optJSONObject(i);
+                                Charger s = Charger.parseJSON(item);
+                                if (s != null) temp.add(s);
                             }
-                        } else {
-                            if (error != null) {
-                                error.printStackTrace();
-                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
                         }
-                        //salvataggio sul DB
-                        //DB.getInstance(getApplication()).getChargerDAO().insert(temp);
-
-                        //salvataggio sulla lista contenuta dal ViewModel
-                        chargers.postValue(temp);
+                    } else {
+                        if (error != null) {
+                            error.printStackTrace();
+                        }
                     }
-                });
+                    //salvataggio sul DB
+                    DB.getInstance(getApplication()).getChargerDAO().insertChargers(temp);
 
-            } else {
-                chargers.postValue(list);
-            }
+                    //salvataggio sulla lista contenuta dal ViewModel
+                    chargers.postValue(temp);
+                }
+            });
 
-        }).start();
+        } else {
+            //main thread
+            chargers.setValue(list);
+        }
     }
 
     public MutableLiveData<List<Charger>> getChargers() {

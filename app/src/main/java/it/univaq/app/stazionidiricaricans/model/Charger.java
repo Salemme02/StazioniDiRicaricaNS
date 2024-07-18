@@ -1,11 +1,15 @@
 package it.univaq.app.stazionidiricaricans.model;
 
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.Serializable;
 import java.net.URL;
 
+@Entity(tableName="chargers")
 public class Charger implements Serializable {
 
     public static Charger parseJSON(JSONObject object) throws JSONException {
@@ -27,6 +31,7 @@ public class Charger implements Serializable {
 
         return charger;
     }
+    @PrimaryKey
     private Integer id;
     private String operator;
     private String usageType;
