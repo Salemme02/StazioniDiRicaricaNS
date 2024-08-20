@@ -16,7 +16,7 @@ public interface ChargerDAO {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     public void insertChargers(List<Charger> chargers);
 
-    @Delete
+    @Query("DELETE FROM chargers")
     public void deleteAll();
 
     @Query("SELECT * FROM chargers ORDER BY country ASC")

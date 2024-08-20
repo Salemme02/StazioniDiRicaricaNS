@@ -34,46 +34,51 @@ public class MainViewModel extends AndroidViewModel { //usiamo AndroidViewModel 
 
         repository = ((NSApplication) application).getRepository();
         //recupero la lista dal DB prima di fare la richiesta internet
-        List<Charger> list = DB.getInstance(getApplication()).getChargerDAO().findAll();
 
-        if (list.isEmpty()) {
-            repository.downloadData(application, new Request.RequestCallback() {
+        new Thread(() -> {
 
-                @Override
-                public void onCompleted(UrlRequest request, UrlResponseInfo info, byte[] data, CronetException error) {
+            List<Charger> list = DB.getInstance(getApplication()).getChargerDAO().findAll();
 
-                    List<Charger> temp = new ArrayList<>();
+            if (list.isEmpty()) {
+                repository.downloadData(application, new Request.RequestCallback() {
 
-                    //parsing dei dati
-                    if (data != null) {
-                        String response = new String(data);
-                        try {
-                            JSONArray array = new JSONArray(response);
-                            for (int i = 0; i < array.length(); i++) {
-                                JSONObject item = array.optJSONObject(i);
-                                Charger s = Charger.parseJSON(item);
-                                if (s != null) temp.add(s);
+                    @Override
+                    public void onCompleted(UrlRequest request, UrlResponseInfo info, byte[] data, CronetException error) {
+
+                        List<Charger> temp = new ArrayList<>();
+
+                        //parsing dei dati
+                        if (data != null) {
+                            String response = new String(data);
+                            try {
+                                JSONArray array = new JSONArray(response);
+                                for (int i = 0; i < array.length(); i++) {
+                                    JSONObject item = array.optJSONObject(i);
+                                    Charger s = Charger.parseJSON(item);
+                                    if (s != null) temp.add(s);
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
                             }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+                        } else {
+                            if (error != null) {
+                                error.printStackTrace();
+                            }
                         }
-                    } else {
-                        if (error != null) {
-                            error.printStackTrace();
-                        }
+                        //salvataggio sul DB
+                        DB.getInstance(getApplication()).getChargerDAO().insertChargers(temp);
+
+                        //salvataggio sulla lista contenuta dal ViewModel
+                        chargers.postValue(temp);
                     }
-                    //salvataggio sul DB
-                    DB.getInstance(getApplication()).getChargerDAO().insertChargers(temp);
+                });
 
-                    //salvataggio sulla lista contenuta dal ViewModel
-                    chargers.postValue(temp);
-                }
-            });
+            } else {
+                chargers.postValue(list);
+            }
 
-        } else {
-            //main thread
-            chargers.setValue(list);
-        }
+        }).start();
+
     }
 
     public MutableLiveData<List<Charger>> getChargers() {
