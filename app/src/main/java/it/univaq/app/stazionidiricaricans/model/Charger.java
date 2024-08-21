@@ -82,8 +82,19 @@ public class Charger implements Serializable {
         return usageCost;
     }
 
+    /*
+        public void setUsageCost(String usageCost) {
+            this.usageCost = usageCost;
+        }
+    */
+
     public void setUsageCost(String usageCost) {
-        this.usageCost = usageCost;
+        // (usageCost == null)?this.usageCost = "unknown" : this.usageCost = usageCost;
+        if(usageCost == null) {
+            this.usageCost = "unknown";
+        } else {
+            this.usageCost = usageCost;
+        }
     }
 
     public String getAddress() {

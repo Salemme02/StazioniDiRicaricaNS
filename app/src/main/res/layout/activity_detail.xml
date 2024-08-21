@@ -31,71 +31,67 @@
         android:id="@+id/textCountry"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
         android:text="@{charger.country}"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="16dp"
         android:textAlignment="textStart"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textStatus"
+        app:layout_constraintTop_toBottomOf="@+id/textOperator"
         tools:text="Country" />
 
     <TextView
         android:id="@+id/textTown"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginEnd="16dp"
-        android:textAlignment="textStart"
         android:text="@{charger.town}"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textOperator"
+        app:layout_constraintTop_toBottomOf="@+id/textCountry"
         tools:text="Town" />
 
     <TextView
         android:id="@+id/textAddress"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:text="@{charger.address}"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
-        android:text="@{charger.address}"
-        android:textAlignment="textStart"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textTown"
         tools:text="Address" />
 
     <TextView
-        android:id="@+id/textStatus"
+        android:id="@+id/textUsageType"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:text="@{charger.usageType}"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
-        android:text="@{charger.status}"
-        android:textAlignment="textStart"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textAddress"
-        tools:text="Status" />
+        tools:text="UsageType" />
 
     <TextView
         android:id="@+id/textUsageCost"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:text="@{charger.usageCost}"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
-        android:text="@{charger.usageCost}"
-        android:textAlignment="textStart"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textCountry"
+        app:layout_constraintTop_toBottomOf="@+id/textUsageType"
         tools:text="UsageCost" />
 </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
