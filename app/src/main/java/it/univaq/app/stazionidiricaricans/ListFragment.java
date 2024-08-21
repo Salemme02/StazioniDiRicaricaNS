@@ -18,6 +18,7 @@ import it.univaq.app.stazionidiricaricans.databinding.FragmentListBinding;
 import it.univaq.app.stazionidiricaricans.model.Charger;
 import it.univaq.app.stazionidiricaricans.service.MainViewModel;
 
+
 public class ListFragment extends Fragment {
 
     private FragmentListBinding binding;

@@ -1,10 +1,12 @@
 package it.univaq.app.stazionidiricaricans;
 
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
@@ -56,7 +58,10 @@ public class ChargerAdapter extends RecyclerView.Adapter<ChargerAdapter.ViewHold
 
         @Override
         public void onClick(View v) {
-
+            Charger charger = data.get(getAdapterPosition());
+            Bundle bundle = new Bundle();
+            bundle.putSerializable(DetailActivity.EXTRA_CHARGER, charger);
+            Navigation.findNavController(v).navigate(R.id.action_menu_list_to_detailActivity, bundle);
         }
 
         public void onBind(Charger charger) {

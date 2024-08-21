@@ -18,6 +18,7 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 
 import it.univaq.app.stazionidiricaricans.databinding.FragmentMapBinding;
 import it.univaq.app.stazionidiricaricans.model.Charger;
@@ -36,6 +37,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NavigableMap;
 
 public class MapFragment extends Fragment implements OnMapReadyCallback, LocationListener {
 
@@ -50,13 +52,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
             new ActivityResultCallback<Boolean>() {
                 @Override
                 public void onActivityResult(Boolean granted) {
-                    if(granted) {
+                    if (granted) {
                         LocationHelper.start(requireContext(), MapFragment.this);
                     } else {
                         Toast.makeText(
-                                requireContext(),
-                                R.string.LocationRequiredMessage,
-                                Toast.LENGTH_LONG)
+                                        requireContext(),
+                                        R.string.LocationRequiredMessage,
+                                        Toast.LENGTH_LONG)
                                 .show();
 
                     }
@@ -84,9 +86,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
 
         //chiede i permessi
         int fineLocationPermission = ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION);
-        while(fineLocationPermission == PackageManager.PERMISSION_DENIED) {
+        if (fineLocationPermission == PackageManager.PERMISSION_DENIED) {
             permissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION);
-            fineLocationPermission = ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION);
         }
     }
 
@@ -96,7 +97,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
 
         //chiede i permessi
         int fineLocationPermission = ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION);
-        if(fineLocationPermission == PackageManager.PERMISSION_GRANTED) {
+        if (fineLocationPermission == PackageManager.PERMISSION_GRANTED) {
             LocationHelper.start(requireContext(), this);
         }
     }
@@ -111,7 +112,15 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         map = googleMap;
-
+        map.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+            @Override
+            public void onInfoWindowClick(@NonNull Marker marker) {
+                Charger charger = (Charger) marker.getTag();
+                Bundle bundle = new Bundle();
+                bundle.putSerializable(DetailActivity.EXTRA_CHARGER, charger);
+                Navigation.findNavController(requireView()).navigate(R.id.action_menu_list_to_detailActivity, bundle);
+            }
+        });
         showMarkers();
     }
 
@@ -127,12 +136,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
     }
 
 
-    private void createCharger(Charger charger) {//i markerOptions servono per caricare le informazioni sulla mappa
+    private void createCharger(Charger charger) {   //i markerOptions servono per caricare le informazioni sulla mappa
         MarkerOptions options = new MarkerOptions();
         options.title(charger.getOperator());
         options.position(new LatLng(charger.getLatitude(), charger.getLongitude()));
         options.icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_icon));
-        map.addMarker(options);
+        Marker marker = map.addMarker(options);
+        marker.setTag(charger);
     }
 
 
@@ -145,25 +155,24 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
         LatLngBounds.Builder bounds = new LatLngBounds.Builder();
         bounds.include(currentPosition);
 
-        if(myMarker == null) {
+        if (myMarker == null) {
             MarkerOptions myMarkerOptions = new MarkerOptions();
             myMarkerOptions.title("My Position");
             myMarkerOptions.position(currentPosition);
             myMarker = map.addMarker(myMarkerOptions);
-        }
-        else {
+        } else {
             myMarker.setPosition(currentPosition);
         }
 
         new Thread(() -> {
 
             if (!chargers.isEmpty()) {
-                for(Charger c : chargers) {
+                for (Charger c : chargers) {
 
                     Location chargerLocation = new Location("Charger");
                     chargerLocation.setLatitude(c.getLatitude());
                     chargerLocation.setLongitude(c.getLongitude());
-                    if(chargerLocation.distanceTo(myLocation) >= 200000) continue;
+                    if (chargerLocation.distanceTo(myLocation) >= 200000) continue;
 
                     bounds.include(new LatLng(chargerLocation.getLatitude(), chargerLocation.getLongitude()));
                 }
