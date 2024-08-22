@@ -47,6 +47,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
     private Marker myMarker;
 
     private List<Charger> chargers = new ArrayList<Charger>();
+    private List<Marker> markers = new ArrayList<Marker>();
+
     private ActivityResultLauncher<String> permissionLauncher = registerForActivityResult(
             new ActivityResultContracts.RequestPermission(),
             new ActivityResultCallback<Boolean>() {
@@ -82,6 +84,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
         //recuperiamo il frammento tramite l'api google
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager()
                 .findFragmentById(R.id.fragmentMap); //dato che voglio il manager del frammento devo fare il get child
+
+
         mapFragment.getMapAsync(this);
 
         //chiede i permessi
@@ -116,9 +120,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
             @Override
             public void onInfoWindowClick(@NonNull Marker marker) {
                 Charger charger = (Charger) marker.getTag();
-                Bundle bundle = new Bundle();
-                bundle.putSerializable(DetailActivity.EXTRA_CHARGER, charger);
-                Navigation.findNavController(requireView()).navigate(R.id.action_menu_list_to_detailActivity, bundle);
+                if (charger != null) {
+
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable(DetailActivity.EXTRA_CHARGER, charger);
+                    Navigation.findNavController(requireView()).navigate(R.id.action_menu_list_to_detailActivity, bundle);
+
+                }
             }
         });
         showMarkers();
@@ -140,15 +148,16 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
         MarkerOptions options = new MarkerOptions();
         options.title(charger.getOperator());
         options.position(new LatLng(charger.getLatitude(), charger.getLongitude()));
-        options.icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_icon));
+        options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
         Marker marker = map.addMarker(options);
         marker.setTag(charger);
+        markers.add(marker);
     }
 
 
     @Override
     public void onLocationChanged(@NonNull Location myLocation) {
-        map.clear();
+        //map.clear();
 
         LatLng currentPosition = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
 
@@ -179,9 +188,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
 
             }
             //moveCamera deve essere eseguito sul main thread
-            binding.getRoot().post(() -> {
-                map.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds.build(), 16));
-            });
+//            binding.getRoot().post(() -> {
+//                map.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds.build(), 16));
+//            });
 
         }).start();
 
