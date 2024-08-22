@@ -134,7 +134,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
 
                     Bundle bundle = new Bundle();
                     bundle.putSerializable(DetailActivity.EXTRA_CHARGER, charger);
-                    Navigation.findNavController(requireView()).navigate(R.id.action_menu_list_to_detailActivity, bundle);
+                    Navigation.findNavController(requireView()).navigate(R.id.action_menu_map_to_detailActivity, bundle);
 
                 }
             }
