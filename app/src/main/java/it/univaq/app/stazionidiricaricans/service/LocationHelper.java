@@ -19,11 +19,12 @@ public class LocationHelper {
             LocationManager manager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
 
             //prendo la posizione sia dal gps e dalla rete
-            manager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 15000, 0, listener);
-            manager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 15000, 0, listener);
+            manager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, listener);
+            manager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, listener);
 
         }
     }
+
 
     public static void stop(Context context, LocationListener listener) {
         LocationManager manager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);

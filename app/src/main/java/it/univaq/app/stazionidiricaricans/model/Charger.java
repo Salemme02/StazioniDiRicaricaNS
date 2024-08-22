@@ -67,7 +67,7 @@ public class Charger implements Serializable {
     }
 
     public void setUsageType(String usageType) {
-        this.usageType = usageType;
+        this.usageType = (usageType == null || usageType.equals("null")) ? "unknown" : usageType;
     }
 
     public String getStatus() {
@@ -75,26 +75,16 @@ public class Charger implements Serializable {
     }
 
     public void setStatus(String status) {
-        this.status = status;
+        this.status = (status == null || status.equals("null")) ? "unknown" : status;
     }
 
     public String getUsageCost() {
         return usageCost;
     }
 
-    /*
-        public void setUsageCost(String usageCost) {
-            this.usageCost = usageCost;
-        }
-    */
 
     public void setUsageCost(String usageCost) {
-        // (usageCost == null)?this.usageCost = "unknown" : this.usageCost = usageCost;
-        if(usageCost == null) {
-            this.usageCost = "unknown";
-        } else {
-            this.usageCost = usageCost;
-        }
+        this.usageCost = (usageCost == null || usageCost.equals("null")) ? "unknown" : usageCost;
     }
 
     public String getAddress() {
@@ -102,7 +92,7 @@ public class Charger implements Serializable {
     }
 
     public void setAddress(String address) {
-        this.address = address;
+        this.address = (address == null || address.equals("null") ? "unknown" : address);
     }
 
     public String getTown() {
@@ -110,7 +100,7 @@ public class Charger implements Serializable {
     }
 
     public void setTown(String town) {
-        this.town = town;
+        this.town = (town == null || town.equals("null")) ? "unknown" : town;
     }
 
     public String getStateOrProvince() {
@@ -126,7 +116,7 @@ public class Charger implements Serializable {
     }
 
     public void setCountry(String country) {
-        this.country = country;
+        this.country = (country == null || country.equals("null")) ? "unknown" : country;
     }
 
     public String getLocationInfo() {return locationInfo;}

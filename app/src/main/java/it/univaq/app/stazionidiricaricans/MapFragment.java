@@ -25,6 +25,7 @@ import it.univaq.app.stazionidiricaricans.model.Charger;
 import it.univaq.app.stazionidiricaricans.service.LocationHelper;
 import it.univaq.app.stazionidiricaricans.service.MainViewModel;
 
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -34,6 +35,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,6 +47,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
     private GoogleMap map;
     private MainViewModel mainViewModel;
     private Marker myMarker;
+    private FloatingActionButton centerButton;
 
     private List<Charger> chargers = new ArrayList<Charger>();
     private List<Marker> markers = new ArrayList<Marker>();
@@ -85,6 +88,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager()
                 .findFragmentById(R.id.fragmentMap); //dato che voglio il manager del frammento devo fare il get child
 
+        centerButton = binding.centerButton;
+        centerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                map.moveCamera(CameraUpdateFactory.newLatLngZoom(myMarker.getPosition(), 6));
+            }
+        });
 
         mapFragment.getMapAsync(this);
 
@@ -130,6 +140,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
             }
         });
         showMarkers();
+
     }
 
 
@@ -161,38 +172,40 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
 
         LatLng currentPosition = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
 
-        LatLngBounds.Builder bounds = new LatLngBounds.Builder();
-        bounds.include(currentPosition);
+//        LatLngBounds.Builder bounds = new LatLngBounds.Builder();
+//        bounds.include(currentPosition);
 
         if (myMarker == null) {
             MarkerOptions myMarkerOptions = new MarkerOptions();
             myMarkerOptions.title("My Position");
             myMarkerOptions.position(currentPosition);
             myMarker = map.addMarker(myMarkerOptions);
+            map.moveCamera(CameraUpdateFactory.newLatLngZoom(myMarker.getPosition(), 6));
         } else {
             myMarker.setPosition(currentPosition);
         }
 
-        new Thread(() -> {
-
-            if (!chargers.isEmpty()) {
-                for (Charger c : chargers) {
-
-                    Location chargerLocation = new Location("Charger");
-                    chargerLocation.setLatitude(c.getLatitude());
-                    chargerLocation.setLongitude(c.getLongitude());
-                    if (chargerLocation.distanceTo(myLocation) >= 200000) continue;
-
-                    bounds.include(new LatLng(chargerLocation.getLatitude(), chargerLocation.getLongitude()));
-                }
-
-            }
-            //moveCamera deve essere eseguito sul main thread
+//        new Thread(() -> {
+//
+//            if (!chargers.isEmpty()) {
+//                for (Charger c : chargers) {
+//
+//                    Location chargerLocation = new Location("Charger");
+//                    chargerLocation.setLatitude(c.getLatitude());
+//                    chargerLocation.setLongitude(c.getLongitude());
+//                    if (chargerLocation.distanceTo(myLocation) >= 200000) continue;
+//
+//                    bounds.include(new LatLng(chargerLocation.getLatitude(), chargerLocation.getLongitude()));
+//                }
+//
+//            }
+////            moveCamera deve essere eseguito sul main thread
 //            binding.getRoot().post(() -> {
 //                map.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds.build(), 16));
 //            });
-
-        }).start();
+//
+//        }).start();
 
     }
+
 }

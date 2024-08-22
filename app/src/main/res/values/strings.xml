@@ -1,6 +1,13 @@
 <resources>
     <string name="app_name">StazioniDiRicaricaNS</string>
-    <string name="list">Lista</string>
-    <string name="map">Mappa</string>
-    <string name="LocationRequiredMessage">Non è possibile visualizzare la mappa senza la posizione!</string>
+    <string name="list">List</string>
+    <string name="map">Map</string>
+    <string name="LocationRequiredMessage">It is necessary to !</string>
+    <string name="country">Country:</string>
+    <string name="town">Town:</string>
+    <string name="usage_cost">Usage Cost:</string>
+    <string name="usage_type">Usage Type:</string>
+    <string name="address">Address:</string>
+    <string name="center_position">Center Position</string>
+    <string name="status">Status:</string>
 </resources>

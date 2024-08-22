@@ -6,6 +6,7 @@ import android.os.PersistableBundle;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import it.univaq.app.stazionidiricaricans.databinding.ActivityDetailBinding;
 import it.univaq.app.stazionidiricaricans.model.Charger;
@@ -24,5 +25,9 @@ public class DetailActivity extends AppCompatActivity {
         Charger charger = (Charger) getIntent().getSerializableExtra(EXTRA_CHARGER);
         if(charger != null)
             binding.setCharger(charger);
+
+        getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.green4));
     }
+
+
 }
