@@ -2,7 +2,8 @@
     <string name="app_name">StazioniDiRicaricaNS</string>
     <string name="list">List</string>
     <string name="map">Map</string>
-    <string name="LocationRequiredMessage">It is necessary to !</string>
+    <string name="LocationRequiredMessage">To view your location you must give permission!</string>
+    <string name="CenterButtonMessage">Location Required!</string>
     <string name="country">Country:</string>
     <string name="town">Town:</string>
     <string name="usage_cost">Usage Cost:</string>

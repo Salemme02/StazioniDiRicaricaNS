@@ -46,7 +46,7 @@ public class Request {
 
     //void perchè è asincrono
     public void requestDownload(Request.RequestCallback callback) {
-        engine.newUrlRequestBuilder("https://api.openchargemap.org/v3/poi?output=json", callback,executor)
+        engine.newUrlRequestBuilder("https://api.openchargemap.org/v3/poi?output=json", callback, executor)
                 .build()
                 .start();
         ;

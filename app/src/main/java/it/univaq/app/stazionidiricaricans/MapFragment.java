@@ -49,6 +49,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
     private Marker myMarker;
     private FloatingActionButton centerButton;
 
+    private int fineLocationPermission;
+
     private List<Charger> chargers = new ArrayList<Charger>();
     private List<Marker> markers = new ArrayList<Marker>();
 
@@ -92,14 +94,25 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
         centerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                map.moveCamera(CameraUpdateFactory.newLatLngZoom(myMarker.getPosition(), 6));
+
+                fineLocationPermission = ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION);
+                if (fineLocationPermission == PackageManager.PERMISSION_GRANTED)
+                    map.moveCamera(CameraUpdateFactory.newLatLngZoom(myMarker.getPosition(), 6));
+                else {
+                    Toast.makeText(
+                                    requireContext(),
+                                    R.string.CenterButtonMessage,
+                                    Toast.LENGTH_LONG)
+                            .show();
+
+                }
             }
         });
 
         mapFragment.getMapAsync(this);
 
         //chiede i permessi
-        int fineLocationPermission = ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION);
+        fineLocationPermission = ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION);
         if (fineLocationPermission == PackageManager.PERMISSION_DENIED) {
             permissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION);
         }
@@ -109,8 +122,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Locatio
     public void onResume() {
         super.onResume();
 
-        //chiede i permessi
-        int fineLocationPermission = ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION);
+        fineLocationPermission = ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION);
         if (fineLocationPermission == PackageManager.PERMISSION_GRANTED) {
             LocationHelper.start(requireContext(), this);
         }
